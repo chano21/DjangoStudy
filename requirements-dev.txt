@@ -1,0 +1,14 @@
+#Test
+pytest==6.0.1 #python test 지원
+mypy==0.770 # python type convert 할때 체크
+
+#Code Style
+flake8==3.8.3 # 파이썬 코드스타일 검사
+coverage==5.3 # 파이썬 코드 test하며 %로 보는거.
+black==20.8b1 # flake8에서 검사한걸 자동으로 수정해줌
+
+#Dev Helper
+django-extensions==3.0.9 # ORM 보여주거나 쿼리등등보여줌
+django-debug-toolbar==3.1.1 # 장고 페이지에서 디버깅지원
+
+

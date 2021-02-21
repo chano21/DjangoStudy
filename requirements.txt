@@ -1,11 +1,19 @@
-
-
-#Code Style
-flake8==3.8.3 # 파이썬 코드스타일 검사
-coverage==5.3 # 파이썬 코드 test하며 %로 보는거.
-black==20.8b1 # flake8에서 검사한걸 자동으로 수정해줌
-
-#Dev
 Django==3.1 #django
-PyMySQL==0.10.1 # sql client 
+django-cors-headers==3.4.0 # for cors
+djangorestframework==3.11.1 #drf
+docutils==0.15.2 # python doc
+gunicorn==20.0.4 # gunicorn
+PyJWT==1.7.1 # python jwt
+pytz==2020.1 #python date util
+sqlparse==0.3.1 # sql parsing
+PyMySQL==0.10.1 #sql client 
+redis==3.5.3 #레디스 
+django-url-filter==0.3.15 #django url 필터
+Pillow==8.0.1 #이미지 처리
+drf-renderer-xlsx==0.3.7 #django reft framework 모델변환기
+openpyxl==3.0.5 #python exel
+django-crontab==0.7.1 # #python cron
+drf-yasg==1.17.1 # dfr swagger
+
+ 
 
