@@ -1,2 +1,11 @@
-Django==3.1
-PyMySQL==0.10.1
+
+
+#Code Style
+flake8==3.8.3 # 파이썬 코드스타일 검사
+coverage==5.3 # 파이썬 코드 test하며 %로 보는거.
+black==20.8b1 # flake8에서 검사한걸 자동으로 수정해줌
+
+#Dev
+Django==3.1 #django
+PyMySQL==0.10.1 # sql client 
+
