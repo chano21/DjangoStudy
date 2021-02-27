@@ -8,11 +8,11 @@ os : ubuntu 18.08
 python vitaul : miniconda 
 
 ----------
-master  <    -    > chano21 |->  samplebranch1
+master  <    -    > chano21 |->  samplebranch1  
                             |
-                            |->  samplebranch2
+                            |->  samplebranch2  
                             |
-                            |->  samplebranch3
+                            |->  samplebranch3  
 
       chano21 에서 브랜치 따서작업하면 chano21이 master에 merge작업 진행.
       
