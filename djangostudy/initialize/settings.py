@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "debug_toolbar",
     "django.contrib.staticfiles",
-    "django_pdb",
+    "drf_yasg",
+    "rest_framework",
 ]
 
 INSTALLED_APPS += APPS
@@ -90,6 +91,8 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
     ]
 }
+
+SWAGGER_SETTINGS = {}
 
 
 # Database
