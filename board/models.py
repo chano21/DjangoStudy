@@ -4,7 +4,7 @@ from django.db import models
 from member.models import Member
 
 
-class board(CommonModel):
+class Board(CommonModel):
 
     board_index = models.AutoField(primary_key=True, verbose_name="게시판 아이디")
     user_index = models.ForeignKey(Member, on_delete=models.DO_NOTHING, verbose_name="member참조아이디")

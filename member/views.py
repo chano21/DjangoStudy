@@ -14,6 +14,7 @@ from drf_yasg.openapi import IN_HEADER, TYPE_STRING
 
 
 from .models import Member
+from board.models import Board
 from .serializers import MemberSerializer
 
 
@@ -37,7 +38,7 @@ class MemberList(APIView):
 
         """
 
-        queryset = self.queryset
+        queryset = Board.objects.select_related("user_index")
 
         serializer = MemberSerializer(queryset, many=True)
 
@@ -56,7 +57,7 @@ class MemberOne(APIView):
     @swagger_auto_schema(
         methods=["post"],
         request_body=MemberSerializer,
-        manual_parameters=[Parameter("member_name", IN_HEADER, type=TYPE_STRING)],
+        #      manual_parameters=[Parameter("member_name", IN_HEADER, type=TYPE_STRING)],
     )
     @action(detail=False, methods=["post"], url_path="")
     def post(self, request, pk=None):
@@ -72,13 +73,12 @@ class MemberOne(APIView):
         print(member_name)
 
         data = Member(
-            user_name=request.data.user_name,
-            user_grant=request.data.user_grant,
-            user_age=request.data.user_age,
-            user_email=request.data.user_email,
+            user_name=request.data["user_name"],
+            user_grant=request.data["user_grant"],
+            user_age=request.data["user_age"],
+            user_email=request.data["user_email"],
         )
         data.save()
-
         # queryset = self.queryset.create
 
         #  data = request.put
