@@ -14,10 +14,8 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 
-# pymysql.version_info = (1, 4, 6, 'final', 0)
 pymysql.version_info = (1, 4, 0, "final", 0)
 
-pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -36,7 +34,7 @@ DEBUG = True
 # ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0','localhost']
 ALLOWED_HOSTS = ["*"]
 
-APPS = ["cafe", "board", "member"]
+APPS = ["cafe", "board", "member", "comment"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -123,10 +121,10 @@ LOGGING = {
         "console": {"class": "logging.StreamHandler", "formatter": "devformat"},
     },
     "loggers": {
-        "": {
-            "handlers": ["console"],
-            "level": "INFO",
-        },
+        # "": {
+        #     "handlers": ["console"],
+        #     "level": "INFO",
+        # },
         "api.logger": {
             "level": "DEBUG",
             "handlers": ["console"],

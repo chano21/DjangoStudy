@@ -7,7 +7,7 @@ from djangostudy.enum import MEMBER_GRANT
 
 class Member(CommonModel):
 
-    user_id = models.AutoField(primary_key=True, verbose_name="유저 아이디")
+    user_index = models.AutoField(primary_key=True, verbose_name="유저 아이디")
     user_grant = models.CharField(
         choices=MEMBER_GRANT, default="Admin", max_length=20, verbose_name="유저 권한", null=False
     )

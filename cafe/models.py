@@ -7,7 +7,14 @@ from member.models import Member
 class Cafe(CommonModel):
 
     cafe_index = models.AutoField(primary_key=True, verbose_name="카페 아이디")
-    user_index = models.ForeignKey(Member, on_delete=models.DO_NOTHING, verbose_name="member참조아이디")
+    user_index = models.ForeignKey(
+        Member,
+        on_delete=models.DO_NOTHING,
+        verbose_name="member참조아이디",
+        db_column="user_index",
+        related_name="user_relate",
+        null=True,
+    )
     cafe_name = models.CharField(max_length=24, blank=True, null=True, verbose_name="카페 이름")
 
     class Meta:
