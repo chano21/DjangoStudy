@@ -33,6 +33,9 @@ import time
 
 # class MemberViewSet(ModelViewSet):
 class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
+
+    serializer_class = UnionSerializer
+
     def get_serializer_class(self):
         if self.action == "list":
             return UnionSerializer
@@ -78,7 +81,7 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
     @action(detail=False, methods=["get"], url_path="memberlist")
     def memberlist(self, request):
 
-        self.serializers = UnionSerializer
+#        self.serializers = UnionSerializer
 
         #   testquery = self.filter_queryset()
         """
@@ -106,9 +109,10 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         # print("time :", time.time() - start)
         # result = comment.union(member)
         result = comment.union(member)
-        print(f"result: {result}")
+        serial = self.serializers(result)
+        print(f"result: {serial}")
 
-        serialdata = self.get_serializer(result, many=True)
+        serialdata = self.get_serializer(serial, many=True)
 
         print(serialdata)
 
