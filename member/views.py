@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet, mixins, ModelViewSet
 
@@ -23,7 +24,7 @@ from board.models import Board
 from cafe.models import Cafe
 from comment.models import Comment
 
-from .serializers import MemberSerializer
+from .serializers import MemberSerializer, UnionSerializer
 
 import os
 
@@ -32,6 +33,9 @@ import time
 
 # class MemberViewSet(ModelViewSet):
 class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
+    def get_serializer_class(self):
+        if self.action == "list":
+            return UnionSerializer
 
     """
 
@@ -74,7 +78,9 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
     @action(detail=False, methods=["get"], url_path="memberlist")
     def memberlist(self, request):
 
-        testquery = self.filter_queryset()
+        self.serializers = UnionSerializer
+
+        #   testquery = self.filter_queryset()
         """
         Member List 조회
 
@@ -86,12 +92,8 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         # queryset1 = Board.objects.prefetch_related("user_index")
         # print(f"{queryset1}")
         start = time.time()
-        comment = Comment.objects.annotate(changecolumns1=F("contents"), changecolumns2=F("cafe_name")).values(
-            "changecolumns1", "changecolumns2"
-        )
-        member = Member.objects.annotate(changecolumns1=F("user_name"), changecolumns2=F("user_email")).values(
-            "changecolumns1", "changecolumns2"
-        )
+        comment = Comment.objects.annotate(col1=F("contents"), col2=F("comment_depth")).values("col1", "col2")
+        member = Member.objects.annotate(col1=F("user_name"), col2=F("user_email")).values("col1", "col2")
         print("time :", time.time() - start)
 
         # start = time.time()
@@ -104,6 +106,13 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         # print("time :", time.time() - start)
         # result = comment.union(member)
         result = comment.union(member)
+        print(f"result: {result}")
+
+        serialdata = self.get_serializer(result, many=True)
+
+        print(serialdata)
+
+        # serializer = self.get_serializer(page, many=True)
 
         # cafe1.get_queryset()
         # cafe2 = Cafe.objects.select_related("user_index")

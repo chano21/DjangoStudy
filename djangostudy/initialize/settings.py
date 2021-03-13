@@ -121,10 +121,10 @@ LOGGING = {
         "console": {"class": "logging.StreamHandler", "formatter": "devformat"},
     },
     "loggers": {
-        # "": {
-        #     "handlers": ["console"],
-        #     "level": "INFO",
-        # },
+        "": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
         "api.logger": {
             "level": "DEBUG",
             "handlers": ["console"],

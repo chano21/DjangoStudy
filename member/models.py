@@ -20,3 +20,17 @@ class Member(CommonModel):
         db_table = "study_member"
         verbose_name = "유저"
         app_label = "member"
+
+class UnionMmeberWithComment(CommonModel):
+
+    col1 = models.CharField(max_length=24, blank=True, null=True, verbose_name="col1")
+    col2 = models.CharField(max_length=24, blank=True, null=True, verbose_name="col2")
+    
+    
+    class Meta:
+        managed = False
+      #  db_table = "study_member"
+        verbose_name = "유저"
+
+        app_label = "member"
+

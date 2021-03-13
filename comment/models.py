@@ -9,7 +9,7 @@ from member.models import Member
 class Comment(CommonModel):
 
     comment_index = models.AutoField(primary_key=True, verbose_name="Comment Index")
-    cafe_name = models.CharField(max_length=24, blank=True, null=True, verbose_name="댓글")
+    comment_depth = models.IntegerField(blank=True, null=True, verbose_name="depth")
     contents = models.CharField(max_length=24, blank=True, null=True, verbose_name="내용")
     user_index = models.ForeignKey(
         Member,
