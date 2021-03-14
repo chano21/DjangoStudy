@@ -5,7 +5,7 @@ from django.db import models
 from djangostudy.enum import MEMBER_GRANT
 
 
-class Member(CommonModel):
+class Member(models.Model):
 
     user_index = models.AutoField(primary_key=True, verbose_name="유저 아이디")
     user_grant = models.CharField(
@@ -22,7 +22,7 @@ class Member(CommonModel):
         app_label = "member"
 
 
-class UnionMmeberWithComment(CommonModel):
+class UnionMmeberWithComment(models.Model):
 
     col1 = models.CharField(max_length=24, blank=True, null=True, verbose_name="col1")
     col2 = models.CharField(max_length=24, blank=True, null=True, verbose_name="col2")

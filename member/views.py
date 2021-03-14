@@ -33,30 +33,16 @@ import time
 
 # class MemberViewSet(ModelViewSet):
 class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
-    serializer_class = UnionSerializer
+    # serializer_class = UnionSerializer
 
-    def get_serializer_class(self):
-        if self.action == "list":
-            return UnionSerializer
+    # def get_serializer_class(self):
+    #     if self.action == "list":
+    #         return UnionSerializer
 
     """
 
     Member rounter
     """
-
-    # @swagger_auto_schema(
-    #     # methods=["get"],
-    #     # url_path="pointlist",
-    #     manual_parameters=[
-    #         openapi.Parameter(
-    #             "offset", openapi.IN_QUERY, description="쿼리의 시작 위치(1~30/31~60/...)", type=openapi.TYPE_STRING
-    #         ),
-    #         openapi.Parameter(
-    #             "limit", openapi.IN_QUERY, description="한 페이지에서 보여주는 row 수(default=30)", type=openapi.TYPE_STRING
-    #         ),
-    #         openapi.Parameter("page", openapi.IN_QUERY, description="현재 페이지", type=openapi.TYPE_STRING),
-    #         openapi.Parameter("created_at_lte", openapi.IN_QUERY, description="Before 기간", type=openapi.TYPE_STRING),
-    #         openapi.Parameter("created_at_gte", openapi.IN_QUERY, description="After 기간", type=openapi.TYPE_STRING),
 
     @swagger_auto_schema(
         methods=["get"],
@@ -80,76 +66,27 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
     @action(detail=False, methods=["get"], url_path="memberlist")
     def memberlist(self, request):
 
-        #        self.serializers = UnionSerializer
-
-        #   testquery = self.filter_queryset()
         """
         Member List 조회
 
         """
-        # print("now pid : " + str(os.getpid()))
-
-        # queryset1 = Board.objects.select_related("user_index")
-        # print(f"{queryset1}")
-        # queryset1 = Board.objects.prefetch_related("user_index")
-        # print(f"{queryset1}")
         start = time.time()
-        comment = Comment.objects.annotate(col1=F("contents"), col2=F("comment_depth")).values("col1", "col2")
-        member = Member.objects.annotate(col1=F("user_name"), col2=F("user_email")).values("col1", "col2")
+
+        valuelist = ("contents", "comment_depth")
+
+        # comment = Comment.objects.annotate(col1=F("contents"), col2=F("comment_depth")).values("col1", "col2")
+
+        comment = Comment.objects.annotate(col1=F("contents"), col2=F("comment_depth")).only(*valuelist)
+
         print("time :", time.time() - start)
+        result = comment.union(comment)
+        # serial = self.serializer_class(data=result)
+        # serial.is_valid(raise_exception=True)
+        # serial.save()
+        serializer = UnionSerializer(result, many=True)
+        print(f"result: {serializer}")
 
-        # start = time.time()
-        # comment = Comment.objects.annotate(changecolumns1="contents", changecolumns2="cafe_name").values(
-        #     "changecolumns1", "changecolumns2"
-        # )
-        # member = Member.objects.annotate(changecolumns1="user_name", changecolumns2="user_email").values(
-        #     "changecolumns1", "changecolumns2"
-        # )
-        # print("time :", time.time() - start)
-        # result = comment.union(member)
-        result = comment.union(member)
-        serial = self.serializer_class(data=result.data)
-        serial.is_valid(raise_exception=True)
-        serial.save()
-        print(f"result: {serial}")
-
-        #        serialdata = self.get_serializer(result)
-
-        # print(serialdata)
-
-        # serializer = self.get_serializer(page, many=True)
-
-        # cafe1.get_queryset()
-        # cafe2 = Cafe.objects.select_related("user_index")
-
-        # queryset2 = Member.objects.filter(
-        #     user_name=["name1", "name2"],
-        #     #     user_index=OuterRef("pk"),
-        # )
-
-        # queryset3 = Member.objects.all()
-
-        # if not Member.objects.filter(
-        #     ~Exists(
-        #         Member.objects.filter(
-        #             user_name__in=["name1", "name2"],
-        #             user_index=OuterRef("pk"),
-        #         )
-        #     )
-        # ).exists():
-        #     print("Hi")
-        # else:
-        #     print("No")
-
-        #  print(f"{queryset3[0]}")
-        # Cafe.objects.select_related.('')
-        # print(f"{queryset3[0].user_name}")
-
-        # print(f"{queryset3}")
-
-        # serializer = MemberSerializer(cafe1, many=True)
-        #   cafe1 = Comment.objects.prefetch_related("user_index").values()
-        return Response(serial)
+        return Response(serializer.data)
 
 
 # class MemberList(APIView):
