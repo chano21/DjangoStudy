@@ -7,6 +7,7 @@ class MemberSerializer(serializers.ModelSerializer):
         model = Member
         fields = "__all__"
 
+
 class UnionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UnionMmeberWithComment
