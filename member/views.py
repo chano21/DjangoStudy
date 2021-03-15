@@ -1,3 +1,4 @@
+from django.db.models.expressions import Value
 from rest_framework import serializers
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet, mixins, ModelViewSet
@@ -18,7 +19,7 @@ from drf_yasg.openapi import IN_HEADER, TYPE_STRING
 
 # from drf_yasg.openapi import Response as sr
 
-from django.db.models import OuterRef, Exists, F
+from django.db.models import OuterRef, Exists, F, CharField
 from .models import Member
 from board.models import Board
 from cafe.models import Cafe
@@ -30,6 +31,7 @@ import os
 
 import time
 
+from itertools import chain
 
 # class MemberViewSet(ModelViewSet):
 class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
@@ -72,19 +74,24 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         """
         start = time.time()
 
-        valuelist = ("contents", "comment_depth")
+        valuelist = ("col1", "col2", "custom_index", "dummy_data")
 
-        # comment = Comment.objects.annotate(col1=F("contents"), col2=F("comment_depth")).values("col1", "col2")
-
-        comment = Comment.objects.annotate(col1=F("contents"), col2=F("comment_depth")).only(*valuelist)
-
+        comment = Comment.objects.annotate(
+            col1=F("contents"),
+            col2=F("comment_depth"),
+            custom_index=F("user_index"),
+            dummy_data=Value("", output_field=CharField()),
+        ).values(*valuelist)
+        member = Member.objects.annotate(
+            col1=F("user_grant"),
+            col2=F("user_name"),
+            custom_index=F("user_index"),
+            dummy_data=Value("", output_field=CharField()),
+        ).values(*valuelist)
+        # vlaues 로 return 시 dict 형태로 반환되며 serializser에도 dict 형태로 커스텀을 해야한다.
         print("time :", time.time() - start)
-        result = comment.union(comment)
-        # serial = self.serializer_class(data=result)
-        # serial.is_valid(raise_exception=True)
-        # serial.save()
-        serializer = UnionSerializer(result, many=True)
-        print(f"result: {serializer}")
+        resultList = list(chain(comment, member))
+        serializer = UnionSerializer(resultList, many=True)
 
         return Response(serializer.data)
 

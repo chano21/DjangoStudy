@@ -6,7 +6,7 @@ from cafe.models import Cafe
 from member.models import Member
 
 
-class Comment(CommonModel):
+class Comment(models.Model):
 
     comment_index = models.AutoField(primary_key=True, verbose_name="Comment Index")
     comment_depth = models.IntegerField(blank=True, null=True, verbose_name="depth")

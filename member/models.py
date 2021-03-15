@@ -26,7 +26,8 @@ class UnionMmeberWithComment(models.Model):
 
     col1 = models.CharField(max_length=24, blank=True, null=True, verbose_name="col1")
     col2 = models.CharField(max_length=24, blank=True, null=True, verbose_name="col2")
-
+    custom_index = models.CharField(max_length=24, blank=True, null=True, verbose_name="custom_index")
+    dummy_data=models.CharField(max_length=24, blank=True, null=True, verbose_name="dummy_data")
     class Meta:
         managed = False
         #  db_table = "study_member"
