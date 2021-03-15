@@ -37,9 +37,10 @@ from itertools import chain
 class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
     # serializer_class = UnionSerializer
 
-    # def get_serializer_class(self):
-    #     if self.action == "list":
-    #         return UnionSerializer
+    def get_serializer_class(self):
+        pass
+        # if self.action == "list":
+        #     return UnionSerializer
 
     """
 
@@ -94,6 +95,30 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         serializer = UnionSerializer(resultList, many=True)
 
         return Response(serializer.data)
+
+    @swagger_auto_schema(
+        methods=["put"],
+        #     manual_parameters=[Parameter("Member_Header", IN_HEADER, description="Member Header Test", type=TYPE_STRING)],
+    )
+    @action(detail=False, methods=["put"], url_path="membercreate")
+    def membersave(self, request):
+
+        """
+        Member create
+
+        """
+
+        #       user_index = models.AutoField(primary_key=True, verbose_name="유저 아이디")
+        # user_grant = models.CharField(
+        #     choices=MEMBER_GRANT, default="Admin", max_length=20, verbose_name="유저 권한", null=False
+        # )
+        # user_name = models.CharField(max_length=24, blank=True, null=True, verbose_name="유저 이름")
+        # user_age = models.DateTimeField(blank=True, null=True, verbose_name="유저 이름")
+        # user_email = models.CharField(max_length=20, blank=True, null=True, verbose_name="유저 나이")
+
+        Member.objects.create(user_grant="admin", user_name="create_test_name", user_email="create@mail.com")
+
+        return Response("create_success")
 
 
 # class MemberList(APIView):
