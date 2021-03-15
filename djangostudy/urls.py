@@ -4,6 +4,8 @@ from django.urls import include, path, re_path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from .router import router
+
 from .initialize import settings
 
 
@@ -27,10 +29,14 @@ urls = [
     path("cafe/", include("cafe.urls")),
     path("member/", include("member.urls")),
 ]
-urlpatterns = []
+
 
 # debug 모드일때 swagger 허용
 if settings.DEBUG:
     urlpatterns = urls + swaggers
 else:
     urlpatterns = urls
+
+urlpatterns += [
+    path("", include(router.urls)),
+]

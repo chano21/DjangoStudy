@@ -14,10 +14,8 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 
-# pymysql.version_info = (1, 4, 6, 'final', 0)
 pymysql.version_info = (1, 4, 0, "final", 0)
 
-pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -36,7 +34,7 @@ DEBUG = True
 # ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0','localhost']
 ALLOWED_HOSTS = ["*"]
 
-APPS = ["cafe", "board", "member"]
+APPS = ["cafe", "board", "member", "comment"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -109,6 +107,42 @@ DATABASES = {
         "PORT": "3306",  # 데이터베이스 포트(보통은 3306)
     }
 }
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "devformat": {
+            "format": "{levelname} {asctime} {module} {message} \n\n",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "devformat"},
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+        "api.logger": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": True,
+        },
+        "django.request": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+        "root": {"level": "INFO", "handlers": ["console"]},
+    },
+}
+
 
 # DATABASES = {
 #     "default": {
