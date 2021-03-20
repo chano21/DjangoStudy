@@ -2,13 +2,22 @@
 """Django's command-line utility for administrative tasks."""
 import os
 
+import environ
+
 import sys
 
 
 def main():
     """Run administrative tasks."""
+    # os.environ
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangostudy.initialize.settings")
+    #    os.environ['DJANGO_SETTINGS_MODULE']='djangostudy.initialize.settings'
+
+    # os.environ.
     #   print("now pid : " + str(os.getpid()))
+    #    environ.Env.read_env()
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
