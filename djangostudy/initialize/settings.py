@@ -9,7 +9,15 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import environ
+
 import pymysql
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
 
 pymysql.install_as_MySQLdb()
 
@@ -29,7 +37,7 @@ SECRET_KEY = "i(#tpmus&8tk*nj+j8a1cgt!^w4+!kdb-@r!t%$x=($fa%==b0"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 # ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0','localhost']
 ALLOWED_HOSTS = ["*"]
@@ -47,6 +55,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "drf_yasg",
     "rest_framework",
+    "django_celery_beat",
+    "django_celery_results",
 ]
 
 INSTALLED_APPS += APPS
@@ -97,17 +107,19 @@ SWAGGER_SETTINGS = {}
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "djangostudy",  # DB명
-        "USER": "root",
-        "PASSWORD": "1234",  # 계정 비밀번호
-        "HOST": "localhost",  # 데이테베이스 주소(IP)
-        "PORT": "3306",  # 데이터베이스 포트(보통은 3306)
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "djangostudy",  # DB명
+#         "USER": "root",
+#         "PASSWORD": "1234",  # 계정 비밀번호
+#         "HOST": "localhost",  # 데이테베이스 주소(IP)
+#         "PORT": "3306",  # 데이터베이스 포트(보통은 3306)
+#     }
+# }
 
+DATABASES = {"default": env.db()}
+CACHES = {"default": env.cache("REDIS_URL")}
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -190,3 +202,12 @@ USE_TZ = True
 
 
 STATIC_URL = "/static/"
+
+CELERY_ALWAYS_EAGER = True
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Seoul'
+
