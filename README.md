@@ -38,9 +38,14 @@ python manage.py migrate --settings=djangostudy.initialize.settings
 
 REDIS DOCKER 실행 명령어
 
-docker run -p 6379:6379 -v D:\djangostudy\DjangoStudy\redis.conf:/usr/local/etc/redis --name myredis redis redis-server
+<!-- docker run -p 6379:6379 -v D:\djangostudy\DjangoStudy\redis.conf:/usr/local/etc/redis --name myredis redis redis-server -->
 
-docker stop myredis && docker rm myredis
+docker build -t chanoredis .
+
+docker run -d -p 6379:6379 --name chanoredis redis redis-server
+
+
+docker stop chanoredis && docker rm chanoredis
 
 -------------
 
