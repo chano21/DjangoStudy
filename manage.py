@@ -14,7 +14,7 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangostudy.initialize.settings")
     #    os.environ['DJANGO_SETTINGS_MODULE']='djangostudy.initialize.settings'
     environ.Env.read_env()
-    print(os.environ)
+    # print(os.environ)
     # os.environ.
     #   print("now pid : " + str(os.getpid()))
  

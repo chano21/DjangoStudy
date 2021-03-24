@@ -1,5 +1,6 @@
+from drf_yasg.openapi import Parameter
 from rest_framework import serializers
-from .models import Member, UnionMmeberWithComment
+from .models import Member, UnionMmeberWithComment,MyModel
 
 
 class MemberSerializer(serializers.ModelSerializer):
@@ -29,3 +30,14 @@ class UnionSerializer(serializers.ModelSerializer):
             return ""
         else:
             return obj["col2"]
+            
+
+
+
+
+
+class MyModelSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = MyModel
+        fields = ('file','is_active')

@@ -4,9 +4,9 @@ from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet, mixins, ModelViewSet
 
 from djangostudy.response import PCOResponse
-
+from rest_framework.parsers import MultiPartParser, FileUploadParser
 from .tasks import test
-        
+
 
 # from rest_framework.views import GenericViewSet,mixins,ListModelMixin
 #  mixins.RetrieveModelMixin,
@@ -30,7 +30,7 @@ from board.models import Board
 from cafe.models import Cafe
 from comment.models import Comment
 
-from .serializers import MemberSerializer, UnionSerializer
+from .serializers import MemberSerializer, UnionSerializer, MyModelSerializer
 
 import os
 
@@ -98,15 +98,16 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         print("time :", time.time() - start)
         resultList = list(chain(comment, member))
         serializer = UnionSerializer(resultList, many=True)
-        rs = test.apply_async(('hello?'),queue='pco',countdown=5)
+        rs = test.apply_async(("hello?"), queue="pco", countdown=5)
         print(rs.failed())
         print(rs.successful())
         print(rs.state)
-        
+
         # test.delay('loop')
-        
+
         return Response(serializer.data)
-      #  return PCOResponse(serializer.data)
+
+    #  return PCOResponse(serializer.data)
     @swagger_auto_schema(
         methods=["put"],
         #     manual_parameters=[Parameter("Member_Header", IN_HEADER, description="Member Header Test", type=TYPE_STRING)],
@@ -130,6 +131,17 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         Member.objects.create(user_grant="admin", user_name="create_test_name", user_email="create@mail.com")
 
         return Response("create_success")
+
+    @swagger_auto_schema(
+        methods=["put"],
+        request_body=MyModelSerializer,
+        parser_classes=(MultiPartParser, FileUploadParser)
+        #     manual_parameters=[Parameter("Member_Header", IN_HEADER, description="Member Header Test", type=TYPE_STRING)],
+    )
+    @action(detail=False, methods=["put"], url_path="file_upload")
+    def file_upload(self, request, **kwargs):
+
+        pass
 
 
 # class MemberList(APIView):
