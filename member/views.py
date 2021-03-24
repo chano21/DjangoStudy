@@ -3,6 +3,11 @@ from rest_framework import serializers
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet, mixins, ModelViewSet
 
+from djangostudy.response import PCOResponse
+
+from .tasks import test
+        
+
 # from rest_framework.views import GenericViewSet,mixins,ListModelMixin
 #  mixins.RetrieveModelMixin,
 #     mixins.ListModelMixin,
@@ -93,9 +98,15 @@ class MemberViewSet(mixins.ListModelMixin, GenericViewSet):
         print("time :", time.time() - start)
         resultList = list(chain(comment, member))
         serializer = UnionSerializer(resultList, many=True)
-
+        rs = test.apply_async(('hello?'),queue='pco',countdown=5)
+        print(rs.failed())
+        print(rs.successful())
+        print(rs.state)
+        
+        # test.delay('loop')
+        
         return Response(serializer.data)
-
+      #  return PCOResponse(serializer.data)
     @swagger_auto_schema(
         methods=["put"],
         #     manual_parameters=[Parameter("Member_Header", IN_HEADER, description="Member Header Test", type=TYPE_STRING)],

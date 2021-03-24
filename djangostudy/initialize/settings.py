@@ -9,15 +9,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
-import environ
+#import environ
 
 import pymysql
 
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-environ.Env.read_env()
+
+# env = environ.Env(
+#     # set casting, default value
+#     DEBUG=(bool, False)
+# )
+# environ.Env.read_env()
+
+# DEBUG = env("DEBUG")
+DEBUG = True
+
+# env = environ.Env
 
 pymysql.install_as_MySQLdb()
 
@@ -37,7 +43,6 @@ SECRET_KEY = "i(#tpmus&8tk*nj+j8a1cgt!^w4+!kdb-@r!t%$x=($fa%==b0"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
 
 # ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0','localhost']
 ALLOWED_HOSTS = ["*"]
@@ -107,19 +112,19 @@ SWAGGER_SETTINGS = {}
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "djangostudy",  # DB명
-#         "USER": "root",
-#         "PASSWORD": "1234",  # 계정 비밀번호
-#         "HOST": "localhost",  # 데이테베이스 주소(IP)
-#         "PORT": "3306",  # 데이터베이스 포트(보통은 3306)
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "djangostudy",  # DB명
+        "USER": "root",
+        "PASSWORD": "1234",  # 계정 비밀번호
+        "HOST": "localhost",  # 데이테베이스 주소(IP)
+        "PORT": "3306",  # 데이터베이스 포트(보통은 3306)
+    }
+}
 
-DATABASES = {"default": env.db()}
-CACHES = {"default": env.cache("REDIS_URL")}
+# DATABASES = {"default": env.db()}
+# CACHES = {"default": env.cache("REDIS_URL")}
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -203,13 +208,19 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+
+DJANGO_SETTINGS_MODULE = "djangostudy.initialize.settings"
 CELERY_ALWAYS_EAGER = True
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
+CELERY_RESULT_BACKEND = "mysql://root:1234@127.0.0.1:3306/djangostudy"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Seoul"
+DEBUG = True
+REDIS_URL = "rediscache://127.0.0.1:6379/1?client_class=django_redis.client.DefaultClient&password=ungithubbed-secret"
+DATABASE_URL = "mysql://root:1234@127.0.0.1:3306/djangostudy"
+
 
 SCHEDULE_SECOND = 1
 SCHEDULE_MINUTE = 60
@@ -217,4 +228,20 @@ SCHEDULE_HOUR = 60 * SCHEDULE_MINUTE
 SCHEDULE_DAY = 24 * SCHEDULE_HOUR
 SCHEDULE_WEEK = 7 * SCHEDULE_DAY
 SCHEDULE_MONTH = 30 * SCHEDULE_DAY
-CELERYBEAT_SCHEDULE = {"add": {"task": "member.tasks.add", "schedule": 5.0, "args": (4, 4)}}
+
+
+# CELERY_ALWAYS_EAGER = True
+# CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+# CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
+# CELERY_ACCEPT_CONTENT = env("CELERY_ACCEPT_CONTENT")
+# CELERY_TASK_SERIALIZER = env("CELERY_TASK_SERIALIZER")
+# CELERY_RESULT_SERIALIZER = env("CELERY_RESULT_SERIALIZER")
+# CELERY_TIMEZONE = env("CELERY_TIMEZONE")
+
+# SCHEDULE_SECOND = 1
+# SCHEDULE_MINUTE = 60
+# SCHEDULE_HOUR = 60 * SCHEDULE_MINUTE
+# SCHEDULE_DAY = 24 * SCHEDULE_HOUR
+# SCHEDULE_WEEK = 7 * SCHEDULE_DAY
+# SCHEDULE_MONTH = 30 * SCHEDULE_DAY
+# CELERYBEAT_SCHEDULE = {"add": {"task": "member.tasks.add", "schedule": 5.0, "args": (4, 4)}}
